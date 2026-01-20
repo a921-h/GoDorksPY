@@ -4,11 +4,11 @@
 
 ## Descripción
 
-GoDorksPY es una aplicación de escritorio desarrollada con Python y Flet, diseñada para simplificar las búsquedas OSINT (Open Source Intelligence) utilizando Google Dorks. Proporciona una interfaz gráfica de usuario intuitiva que permite a los usuarios generar automáticamente una variedad de consultas de Google Dorks basadas en una única entrada, facilitando la exploración de información pública en la web.
+GoDorksPY es una aplicación de escritorio desarrollada con Python y Flet, diseñada para simplificar las búsquedas OSINT (Open Source Intelligence) utilizando Google Dorks. Proporciona una interfaz gráfica de usuario minimalista y simple que permite a los usuarios generar automáticamente una variedad de consultas de Google Dorks basadas en una única entrada de texto (como el buscador de Google), facilitando la exploración de información pública en internet.
 
 ## Características
 
--   **Interfaz Gráfica Intuitiva**: Desarrollada con Flet para una experiencia de usuario moderna y responsiva.
+-   **Interfaz Gráfica Intuitiva**: Desarrollada con Flet para una experiencia de usuario moderna y adpatable a cualquier dispositivo.
 -   **Búsqueda Simplificada**: Un único campo de entrada para tus consultas OSINT.
 -   **Generación Automática de Dorks**: Transforma tu consulta en una lista de Google Dorks comunes y efectivos (ej. búsqueda de PDFs, documentos de Word, perfiles de LinkedIn, directorios públicos, etc.).
 -   **Previsualización en la Aplicación**: Visualiza los detalles de cada dork generado (nombre, consulta dork, URL de Google) dentro de la aplicación antes de abrirlo en el navegador.
@@ -17,17 +17,38 @@ GoDorksPY es una aplicación de escritorio desarrollada con Python y Flet, dise�
 
 ## Instalación
 
-Para ejecutar GoDorksPY, necesitarás tener Python instalado en tu sistema. Luego, puedes instalar Flet y las dependencias del proyecto:
+Para ejecutar GoDorksPY, necesitarás tener Python instalado en tu sistema siendo esta la ultima versión existente. Luego, puedes instalar Flet y las dependencias del proyecto:
 
 1.  **Clona el repositorio** (si aún no lo has hecho):
     ```bash
     git clone https://github.com/makinatetanos/GoDorksPY.git 
     cd GoDorksPY
     ```
-2.  **Instala Flet** y las dependencias:
+2.  **Inicia el Entorno** usa el siguiente comando:
     ```bash
-    pip install -r requirements.txt
+    pip install -m venv venv
     ```
+3. **Activa el entorno Virtual**:
+   ```bash
+    source .venv/bin/activate
+   ```
+   En el caso de Windows:
+   ```
+    .\venv\Scripts\Activate.ps1
+   ```
+4. **Instala Flet**:
+   ```
+    pip install 'flet[all]'
+   ```
+5. **Verifica la istalación**:
+    ```
+    flet --version
+    ```
+    Recuerda actualizar flet a su ultima versión de la siguiente forma:
+    ```
+    pip install 'flet[all]' --upgrade
+    ```
+    Puedes consultar la documentación de flet aqui: [Documentación de Flet](https://docs.flet.dev/)
 
 ## Uso
 
@@ -46,7 +67,7 @@ python main.py
 
 ## Contribución
 
-¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar la herramienta, por favor, abre un 'issue' o envía un 'pull request'.
+¡Si deseas contribiri, puedes hacerlo! Si tienes ideas para mejorar la herramienta, por favor, abre un 'issue' o envía un 'pull request'.
 
 ## Licencia
 

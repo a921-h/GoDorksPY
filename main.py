@@ -1,149 +1,269 @@
 import flet as ft
 import webbrowser
+import urllib.parse
 
-def main(page: ft.Page):
-    page.title = "GoDorksPY - OSINT Search"
-    page.bgcolor = ft.Colors.BLACK
+class DorkEngine:
+    """Clase para generar dorks de Google basados en una consulta."""
     
-    # State variable to hold search results across view changes
-    page.results_data = []
-
-    def open_in_browser(url):
-        webbrowser.open(url)
-        page.update()
-
-    def search_clicked(search_field, results_view):
-        raw_query = search_field.value
-        if not raw_query:
-            search_field.error_text = "Search query cannot be empty"
-            page.update()
-            return
-        else:
-            search_field.error_text = None
-
-        results_view.controls.clear()
-        page.results_data.clear()
-
-        generated_dorks = {
-            f'PDF Documents': f'"{raw_query}" filetype:pdf',
-            f'Word Documents': f'"{raw_query}" filetype:docx',
-            f'Excel Spreadsheets': f'"{raw_query}" filetype:xlsx',
-            f'LinkedIn Profiles': f'site:linkedin.com "{raw_query}"',
-            f'Public Directories': f'intitle:"index of" "{raw_query}"',
-            f'Resumes/CVs': f'("{raw_query}" AND (intitle:"resume" OR intitle:"CV"))',
-            f'Email Addresses': f'"{raw_query}" intext:@',
+    @staticmethod
+    def get_categories():
+        return {
+            "Archivos": [
+                {"name": "Documentos PDF", "template": '"{query}" filetype:pdf'},
+                {"name": "Documentos Word", "template": '"{query}" filetype:docx'},
+                {"name": "Hojas de Excel", "template": '"{query}" filetype:xlsx'},
+                {"name": "Presentaciones PPT", "template": '"{query}" filetype:pptx'},
+                {"name": "Archivos de Texto", "template": '"{query}" filetype:txt'},
+                {"name": "Archivos de Registro (Log)", "template": '"{query}" filetype:log'},
+                {"name": "Bases de Datos SQL", "template": '"{query}" filetype:sql'},
+            ],
+            "Social & Perfiles": [
+                {"name": "Perfiles de LinkedIn", "template": 'site:linkedin.com/in/ "{query}"'},
+                {"name": "Perfiles de Twitter/X", "template": 'site:twitter.com "{query}"'},
+                {"name": "Perfiles de Instagram", "template": 'site:instagram.com "{query}"'},
+                {"name": "Perfiles de Facebook", "template": 'site:facebook.com "{query}"'},
+                {"name": "Perfiles de GitHub", "template": 'site:github.com "{query}"'},
+            ],
+            "Infraestructura": [
+                {"name": "Directorios Públicos", "template": 'intitle:"index of" "{query}"'},
+                {"name": "Servidores Apache", "template": 'intitle:"index of" "Apache" "{query}"'},
+                {"name": "Páginas de Login", "template": '"{query}" (inurl:login | inurl:signin)'},
+                {"name": "Configuraciones PHP", "template": '"{query}" "phpinfo()"'},
+                {"name": "Archivos Env / Config", "template": '"{query}" extension:env | extension:conf | extension:config'},
+            ],
+            "Búsqueda Avanzada": [
+                {"name": "Correos Electrónicos", "template": '"{query}" intext:@gmail.com | intext:@outlook.com | intext:@yahoo.com'},
+                {"name": "Menciones en Noticias", "template": 'site:news.google.com "{query}"'},
+                {"name": "Documentos en Pastebin", "template": 'site:pastebin.com "{query}"'},
+                {"name": "Caché de Google", "template": 'cache:"{query}"'},
+            ]
         }
 
-        # Store results in the persistent state variable
-        for i, (name, dork) in enumerate(generated_dorks.items()):
-            google_url = f"https://www.google.com/search?q={dork}"
-            page.results_data.append({"index": i, "name": name, "dork": dork, "url": google_url})
+    @staticmethod
+    def generate_dorks(query):
+        results = []
+        categories = DorkEngine.get_categories()
+        for cat_name, dorks in categories.items():
+            for dork in dorks:
+                dork_query = dork["template"].format(query=query)
+                google_url = f"https://www.google.com/search?q={urllib.parse.quote(dork_query)}"
+                results.append({
+                    "category": cat_name,
+                    "name": dork["name"],
+                    "dork": dork_query,
+                    "url": google_url
+                })
+        return results
 
-        # Populate the UI from the state variable
-        for item in page.results_data:
-            results_view.controls.append(
-                ft.ListTile(
-                    leading=ft.Icon(ft.Icons.LINK, color=ft.Colors.WHITE70),
-                    title=ft.Text(item['name'], color="white", weight=ft.FontWeight.BOLD),
-                    subtitle=ft.Text(item['dork'], color=ft.Colors.WHITE54, size=11),
-                    data=item['index'],
-                    on_click=lambda e: page.go(f"/preview/{e.control.data}")
-                )
-            )
-        page.update()
+def main(page: ft.Page):
+    page.title = "GoDorksPY - OSINT Tool"
+    page.theme_mode = ft.ThemeMode.DARK
+    page.padding = 0
+    page.window_width = 900
+    page.window_height = 800
+    page.window_resizable = True
+    
+    # Fuentes y Colores
+    PRIMARY_COLOR = "#00FF41" # Matrix Green
+    BG_COLOR = "#0D0D0D"
+    SURFACE_COLOR = "#1A1A1A"
+    
+    page.bgcolor = BG_COLOR
+    
+    # Estado de la aplicación
+    results_data = []
 
-    def route_change(route):
-        page.views.clear()
-
-        # --- Main View (Search) ---
-        search_field = ft.TextField(
-            hint_text="Enter a name, company, topic...",
-            width=600, border_color="white", color="white",
-            hint_style=ft.TextStyle(color=ft.Colors.WHITE54),
-        )
-        results_view = ft.ListView(expand=1, spacing=5, auto_scroll=True)
-        search_field.on_submit = lambda e: search_clicked(search_field, results_view)
-
-        # If results already exist (e.g., navigating back), populate the list
-        if page.results_data:
-            for item in page.results_data:
-                results_view.controls.append(
-                    ft.ListTile(
-                        leading=ft.Icon(ft.Icons.LINK, color=ft.Colors.WHITE70),
-                        title=ft.Text(item['name'], color="white", weight=ft.FontWeight.BOLD),
-                        subtitle=ft.Text(item['dork'], color=ft.Colors.WHITE54, size=11),
-                        data=item['index'],
-                        on_click=lambda e: page.go(f"/preview/{e.control.data}")
-                    )
-                )
-
-        page.views.append(
-            ft.View(
-                route="/",
-                bgcolor=ft.Colors.BLACK,
-                padding=20,
-                controls=[
-                    ft.Column([
-                        ft.Text("GoDorksPY", size=40, weight=ft.FontWeight.BOLD, color="white"),
-                        ft.Container(height=15),
-                        search_field,
-                        ft.Container(height=10),
-                        ft.ElevatedButton(
-                            text="Generate Dork Searches",
-                            on_click=lambda e: search_clicked(search_field, results_view),
-                            bgcolor=ft.Colors.BLUE_GREY_700, color="white", width=600
-                        ),
-                        ft.Divider(color=ft.Colors.WHITE24, height=20),
-                        ft.Text("Suggested Dork Searches", color=ft.Colors.WHITE70)
-                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=8),
-                    results_view
-                ]
-            )
+    def copy_to_clipboard(text):
+        page.set_clipboard(text)
+        page.show_snack_bar(
+            ft.SnackBar(ft.Text(f"Copiado al portapapeles: {text}"), bgcolor=ft.Colors.GREEN_700)
         )
 
-        # --- Preview View ---
-        if page.route.startswith("/preview"):
-            preview_index = int(page.route.split("/")[-1])
-            clicked_data = next((item for item in page.results_data if item["index"] == preview_index), None)
+    # --- Internal Browser Modal ---
+    wv_container = ft.Container(expand=True, bgcolor=ft.Colors.WHITE)
+    
+    def close_dlg(e):
+        page.close(browser_dlg)
 
-            if clicked_data:
-                page.views.append(
-                    ft.View(
-                        route=page.route,
-                        bgcolor=ft.Colors.BLACK,
-                        appbar=ft.AppBar(
-                            title=ft.Text("Preview", color="white"),
-                            bgcolor=ft.Colors.BLUE_GREY_900,
-                            leading=ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color="white", on_click=lambda _: page.go("/"))
-                        ),
-                        padding=20,
-                        controls=[
-                            ft.Text(clicked_data['name'], size=24, weight=ft.FontWeight.BOLD, color="white"),
-                            ft.Text(clicked_data['dork'], selectable=True, color=ft.Colors.WHITE70),
-                            ft.Container(height=30),
-                            ft.ElevatedButton(
-                                "Open in Browser",
-                                icon=ft.Icons.OPEN_IN_NEW,
-                                width=300,
-                                bgcolor=ft.Colors.BLUE_500,
-                                color="white",
-                                on_click=lambda _, url=clicked_data['url']: open_in_browser(url)
-                            )
-                        ],
-                        vertical_alignment=ft.MainAxisAlignment.START,
-                        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    browser_dlg = ft.AlertDialog(
+        modal=True,
+        title=ft.Row(
+            [ft.Text("Navegador OSINT Interno", color=PRIMARY_COLOR, weight=ft.FontWeight.BOLD), 
+             ft.IconButton(ft.Icons.CLOSE, on_click=close_dlg)],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+        ),
+        content=ft.Container(
+            content=wv_container,
+            width=1200,
+            height=800,
+            border_radius=10,
+            clip_behavior=ft.ClipBehavior.HARD_EDGE
+        ),
+        bgcolor=SURFACE_COLOR,
+    )
+
+    def open_url(url):
+        try:
+            # Intenta importar el WebView nativo de Flet
+            import flet.webview as webview
+            wv_container.content = webview.WebView(
+                url=url,
+                expand=True,
+            )
+            page.open(browser_dlg)
+        except ImportError:
+            # Si no está instalado flet-webview, usa el navegador del sistema
+            page.show_snack_bar(
+                ft.SnackBar(ft.Text("Módulo 'flet-webview' no encontrado. Abriendo en navegador externo..."), bgcolor=ft.Colors.ORANGE_700)
+            )
+            webbrowser.open(url)
+
+    def on_search(e):
+        query = search_input.value.strip()
+        if not query:
+            search_input.error_text = "Por favor, introduce un término de búsqueda."
+            page.update()
+            return
+        
+        search_input.error_text = None
+        results_list.controls.clear()
+        
+        # Animación de carga (opcional, pero mejora UX)
+        loading_indicator.visible = True
+        page.update()
+        
+        nonlocal results_data
+        results_data = DorkEngine.generate_dorks(query)
+        
+        # Agrupar por categoría
+        categories = {}
+        for item in results_data:
+            cat = item["category"]
+            if cat not in categories:
+                categories[cat] = []
+            categories[cat].append(item)
+            
+        for cat_name, items in categories.items():
+            results_list.controls.append(
+                ft.Container(
+                    content=ft.Text(cat_name, size=18, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR),
+                    padding=ft.padding.only(top=20, bottom=10)
+                )
+            )
+            for item in items:
+                results_list.controls.append(
+                    ft.Container(
+                        content=ft.Column([
+                            ft.Row([
+                                ft.Text(item["name"], weight=ft.FontWeight.W_600, size=16, color="white"),
+                                ft.Row([
+                                    ft.IconButton(
+                                        icon=ft.Icons.COPY,
+                                        icon_size=18,
+                                        icon_color=ft.Colors.WHITE54,
+                                        tooltip="Copiar Dork",
+                                        on_click=lambda e, d=item["dork"]: copy_to_clipboard(d)
+                                    ),
+                                    ft.IconButton(
+                                        icon=ft.Icons.OPEN_IN_NEW,
+                                        icon_size=18,
+                                        icon_color=PRIMARY_COLOR,
+                                        tooltip="Abrir en Google",
+                                        on_click=lambda e, u=item["url"]: open_url(u)
+                                    ),
+                                ], spacing=0)
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                            ft.Text(item["dork"], size=12, color=ft.Colors.WHITE38, italic=True)
+                        ], spacing=2),
+                        padding=15,
+                        bgcolor=SURFACE_COLOR,
+                        border_radius=10,
+                        border=ft.border.all(1, ft.Colors.WHITE10),
+                        on_hover=lambda e: (setattr(e.control, "border", ft.border.all(1, PRIMARY_COLOR)) if e.data == "true" else setattr(e.control, "border", ft.border.all(1, ft.Colors.WHITE10)), e.control.update())
                     )
                 )
+        
+        loading_indicator.visible = False
         page.update()
 
-    def view_pop(view):
-        page.views.pop()
-        top_view = page.views[-1]
-        page.go(top_view.route)
-
-    page.on_route_change = route_change
-    page.on_view_pop = view_pop
-    page.go(page.route)
+    # --- UI Components ---
+    
+    header = ft.Container(
+        content=ft.Column([
+            ft.Text("GoDorksPY", size=48, weight=ft.FontWeight.BOLD, color=PRIMARY_COLOR),
+            ft.Text("ADVANCED OSINT SEARCH ENGINE", size=12, color=ft.Colors.WHITE54),
+        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+        padding=40,
+        width=page.window_width,
+    )
+    
+    search_input = ft.TextField(
+        hint_text="Nombre, empresa, dominio...",
+        width=500,
+        height=50,
+        border_radius=25,
+        border_color=ft.Colors.WHITE24,
+        focused_border_color=PRIMARY_COLOR,
+        color="white",
+        prefix_icon=ft.Icons.SEARCH,
+        on_submit=on_search,
+    )
+    
+    search_button = ft.Container(
+        content=ft.Row([
+            ft.Icon(ft.Icons.BOLT, color=BG_COLOR),
+            ft.Text("GENERAR DORKS", color=BG_COLOR, weight=ft.FontWeight.BOLD)
+        ], alignment=ft.MainAxisAlignment.CENTER, spacing=5),
+        bgcolor=PRIMARY_COLOR,
+        border_radius=25,
+        padding=15,
+        on_click=on_search,
+        ink=True,
+    )
+    
+    loading_indicator = ft.ProgressBar(width=500, color=PRIMARY_COLOR, visible=False)
+    
+    results_list = ft.ListView(
+        expand=True,
+        spacing=10,
+        padding=20,
+    )
+    
+    footer = ft.Container(
+        content=ft.Row([
+            ft.Text("© 2024 GoDorksPY - OSINT Tools", color=ft.Colors.WHITE24, size=12),
+            ft.Row([
+                ft.Container(content=ft.Text("GitHub", color=ft.Colors.WHITE24), on_click=lambda _: open_url("https://github.com/a921-h/GoDorksPY"), padding=5, ink=True),
+                ft.Container(content=ft.Text("Docs", color=ft.Colors.WHITE24), on_click=lambda _: open_url("https://docs.flet.dev/"), padding=5, ink=True),
+            ])
+        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+        padding=ft.padding.only(left=40, right=40, bottom=20, top=10)
+    )
+    
+    # Main Layout
+    page.add(
+        ft.Column([
+            header,
+            ft.Container(
+                content=ft.Column([
+                    ft.Row([search_input, search_button], alignment=ft.MainAxisAlignment.CENTER, spacing=10),
+                    loading_indicator,
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                padding=ft.padding.only(bottom=20)
+            ),
+            ft.Divider(color=ft.Colors.WHITE10, height=1),
+            ft.Container(
+                content=results_list,
+                expand=True,
+                padding=ft.padding.only(left=20, right=20)
+            ),
+            footer
+        ], expand=True, spacing=0)
+    )
 
 if __name__ == "__main__":
-    ft.app(target=main)
+    try:
+        ft.app(target=main)
+    except AttributeError:
+        # Fallback for newer flet versions where app might be completely deprecated/removed in the future
+        ft.run(main)

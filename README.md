@@ -1,5 +1,7 @@
 # GoDorksPY - Advanced OSINT Search Engine
 
+[![Download](https://img.shields.io/badge/Descargar-GoDorksPY.exe-brightgreen?style=for-the-badge&logo=windows)](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe)
+
 ![GoDorksPY Screenshot](captura.png) 
 
 ## 🇪🇸 Descripción
@@ -13,6 +15,8 @@ GoDorksPY es una potente herramienta OSINT (Open Source Intelligence) desarrolla
 - **+20 Patrones de Dorks**: Incluye búsquedas de archivos sensibles, perfiles sociales, directorios expuestos y más.
 - **Versión Ejecutable**: Permite generar un `.exe` independiente para usar sin dependencias.
 
+> **¡Descarga rápida!** No tienes que instalar nada. Baja directamente el [GoDorksPY.exe aquí](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe) y haz doble clic para empezar a investigar.
+
 ---
 
 ## 🇺🇸 Description
@@ -25,6 +29,8 @@ GoDorksPY is a powerful OSINT (Open Source Intelligence) tool developed in Pytho
 - **Smart Categorization**: Dorks grouped by Files, Social, Infrastructure, and Advanced Search.
 - **20+ Dork Patterns**: Includes searches for sensitive files, social profiles, exposed directories, and more.
 - **Standalone Executable**: Easily compile to a standalone `.exe` file.
+
+> **Quick Download!** You don't need to install anything. Just download the [GoDorksPY.exe here](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe) and double-click to start investigating.
 
 ---
 

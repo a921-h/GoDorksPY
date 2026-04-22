@@ -1,131 +1,148 @@
-# GoDorksPY - Advanced OSINT Search Engine
+# GoDorks — Advanced OSINT CLI Tool
 
-[![Download](https://img.shields.io/badge/Descargar-GoDorksPY.exe-brightgreen?style=for-the-badge&logo=windows)](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe)
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org)
+[![Download](https://img.shields.io/badge/⬇️_Descargar-GoDorks.exe-brightgreen?style=for-the-badge&logo=windows)](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorks.exe)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-![GoDorksPY Screenshot](captura.png) 
+```
+  ██████╗  ██████╗ ██████╗  ██████╗ ██████╗ ██╗  ██╗███████╗
+ ██╔════╝ ██╔═══██╗██╔══██╗██╔═══██╗██╔══██╗██║ ██╔╝██╔════╝
+ ██║  ███╗██║   ██║██║  ██║██║   ██║██████╔╝█████╔╝ ███████╗
+ ██║   ██║██║   ██║██║  ██║██║   ██║██╔══██╗██╔═██╗ ╚════██║
+ ╚██████╔╝╚██████╔╝██████╔╝╚██████╔╝██║  ██║██║  ██╗███████║
+  ╚═════╝  ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+          Advanced OSINT CLI Tool · Built with Go
+```
+
+---
 
 ## 🇪🇸 Descripción
 
-GoDorksPY es una potente herramienta OSINT (Open Source Intelligence) desarrollada en Python con Flet. Su objetivo es simplificar y automatizar la generación de **Google Dorks** avanzados para investigaciones digitales. Con una interfaz moderna inspirada en la estética "Cybersecurity", permite extraer información valiosa de internet con un solo clic.
+**GoDorks** es una herramienta CLI OSINT de alto rendimiento desarrollada en **Go**, diseñada para investigadores de seguridad y analistas digitales. Genera automáticamente consultas avanzadas de **Google Dorks** organizadas por categorías a partir de un único término de búsqueda.
 
-### Características Principales:
-- **Interfaz Hacker Estética**: Diseño oscuro y minimalista optimizado para investigadores.
-- **Navegador Interno**: Abre los resultados de búsqueda en un modal flotante sin salir de la app (requiere `flet-webview`).
-- **Categorización Inteligente**: Dorks agrupados por Archivos, Social, Infraestructura y Búsqueda Avanzada.
-- **+20 Patrones de Dorks**: Incluye búsquedas de archivos sensibles, perfiles sociales, directorios expuestos y más.
-- **Versión Ejecutable**: Permite generar un `.exe` independiente para usar sin dependencias.
-- **Soporte Docker**: Úsalo como aplicación web en cualquier servidor.
+El ejecutable resultante pesa **menos de 5MB**, no requiere ningún runtime, y puede automatizarse en scripts.
 
-> **¡Descarga rápida!** No tienes que instalar nada. Baja directamente el [GoDorksPY.exe aquí](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe) y haz doble clic para empezar a investigar.
+### ✨ Características:
+- ⚡ **Ultra rápido**: Binario nativo compilado en Go — arranque instantáneo.
+- 🗂️ **5 Categorías, +40 Dorks**: Archivos, Social, Infraestructura, Inteligencia de Empresa y Búsqueda Avanzada.
+- 🌐 **Multiplataforma**: Windows, Linux y macOS — un solo binario.
+- 🤖 **Automatizable**: Ideal para pipelines de OSINT con flags CLI.
+- 💾 **Exportación**: Guarda todos los resultados en un archivo `.txt` con un solo comando.
+- 📂 **Menú interactivo**: Selecciona categorías, abre dorks en el navegador y exporta resultados en tiempo real.
+- 📦 **Sin dependencias**: Un único ejecutable, sin instalar nada más.
 
 ---
 
 ## 🇺🇸 Description
 
-GoDorksPY is a powerful OSINT (Open Source Intelligence) tool developed in Python using Flet. It simplifies and automates the generation of advanced **Google Dorks** for digital investigations. Featuring a modern "Cybersecurity" aesthetic, it allows you to extract valuable information from the internet with a single click.
+**GoDorks** is a high-performance OSINT CLI tool built in **Go**, designed for security researchers and digital analysts. It auto-generates advanced **Google Dork** queries organized by category from a single search term.
 
-### Key Features:
-- **Cybersecurity Aesthetic**: Dark, minimalist design optimized for investigators.
-- **Internal Browser**: Open search results directly within the app using a floating modal (requires `flet-webview`).
-- **Smart Categorization**: Dorks grouped by Files, Social, Infrastructure, and Advanced Search.
-- **20+ Dork Patterns**: Includes searches for sensitive files, social profiles, exposed directories, and more.
-- **Standalone Executable**: Easily compile to a standalone `.exe` file.
-
-> **Quick Download!** You don't need to install anything. Just download the [GoDorksPY.exe here](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe) and double-click to start investigating.
-
----
-
-## 🚀 Instalación / Installation
-
-### Requisitos / Prerequisites
-- Python 3.10+
-- Pip
-
-### Pasos / Steps
-
-1. **Clonar el repositorio / Clone repository**:
-   ```bash
-   git clone https://github.com/a921-h/GoDorksPY.git
-   cd GoDorksPY
-   ```
-
-2. **Crear entorno virtual / Create virtual environment**:
-   ```bash
-   python -m venv venv
-   # Windows
-   .\venv\Scripts\activate
-   # Linux/Mac
-   source venv/bin/activate
-   ```
-
-3. **Instalar dependencias / Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Features:
+- ⚡ **Ultra fast**: Native Go binary — instant startup.
+- 🗂️ **5 Categories, 40+ Dorks**: Files, Social, Infrastructure, Business Intel & Advanced Search.
+- 🌐 **Cross-platform**: Windows, Linux and macOS.
+- 🤖 **Scriptable**: Perfect for OSINT pipelines using CLI flags.
+- 💾 **Export**: Save all results to a `.txt` file with one flag.
+- 📂 **Interactive Menu**: Select categories, open results in browser, export on-the-fly.
+- 📦 **Zero dependencies**: Single binary, nothing to install.
 
 ---
 
-## 🐳 Uso con Docker / Docker Support
+## ⬇️ Descarga Rápida / Quick Download
 
-Puedes ejecutar GoDorksPY como una **aplicación web** accesible desde cualquier navegador utilizando Docker. Ideal para desplegarlo en un servidor, VPS o NAS.
+> No necesitas tener Go instalado. Descarga el `.exe` directamente y ejecútalo.
 
-1. **Construir la imagen / Build image**:
-   ```bash
-   docker build -t godorkspy .
-   ```
-
-2. **Ejecutar el contenedor / Run container**:
-   ```bash
-   docker run -d -p 8550:8550 godorkspy
-   ```
-
-¡Abre tu navegador y ve a `http://localhost:8550` para usar la herramienta!
+👉 **[Descargar GoDorks.exe para Windows](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorks.exe)**
 
 ---
 
-## 📦 Crear Ejecutable / Build `.exe`
+## 🚀 Uso / Usage
 
-Puedes convertir esta herramienta en un archivo ejecutable portable para Windows utilizando el empaquetador de Flet (que utiliza PyInstaller):
-
-1. **Asegúrate de tener PyInstaller**:
-   ```bash
-   pip install pyinstaller
-   ```
-
-2. **Ejecuta el empaquetado**:
-   ```bash
-   python -m flet pack main.py --name "GoDorksPY" --icon "captura.png"
-   ```
-   *(Nota: si el comando anterior falla en Windows por problemas del PATH, puedes llamar a flet directamente desde su ruta de instalación con `ruta\a\flet.exe pack main.py`)*
-
-¡Encontrarás tu ejecutable listo para usar dentro de la carpeta `dist/`!
-
----
-
-## 🛠️ Uso / Usage
-
-Ejecuta la aplicación con / Run the app with:
+### Modo Interactivo (menú completo)
 ```bash
-python main.py
+./GoDorks
+```
+El programa te pedirá el término y te permitirá elegir la categoría.
+
+### Modo Directo con flags
+```bash
+# Búsqueda simple
+./GoDorks -q "tesla.com"
+
+# Elegir categoría directamente (1=Archivos, 2=Social, 3=Infra, 4=Empresa, 5=Avanzado, 6=Todas)
+./GoDorks -q "tesla.com" -cat 2
+
+# Exportar resultados a un archivo
+./GoDorks -q "tesla.com" -export resultados.txt
+
+# Abrir todos los dorks en el navegador automáticamente
+./GoDorks -q "tesla.com" -open
 ```
 
-1. Introduce un término (nombre, empresa, dominio) en el buscador.
-2. Haz clic en **GENERAR DORKS**.
-3. Usa los iconos para copiar el dork o abrirlo en el navegador interno.
+### Flags disponibles / Available flags
+| Flag | Descripción / Description |
+|------|--------------------------|
+| `-q <term>` | Término de búsqueda (dominio, nombre, empresa) |
+| `-cat <n>` | Seleccionar categoría por número (1-5, 6=Todas) |
+| `-export <file>` | Exportar resultados al archivo especificado |
+| `-open` | Abrir todos los dorks en el navegador automáticamente |
+
+---
+
+## 🐳 Docker / Uso en Servidor
+
+También puedes ejecutar GoDorks como servidor web accesible desde el navegador:
+
+```bash
+# Construir imagen
+docker build -t godorks .
+
+# Ejecutar (accesible en http://localhost:8550)
+docker run -p 8550:8550 godorks
+```
+
+---
+
+## 🔨 Compilar desde el código fuente / Build from source
+
+### Requisitos
+- [Go 1.21+](https://go.dev/dl/)
+
+### Compilar para tu sistema
+```bash
+git clone https://github.com/a921-h/GoDorksPY.git
+cd GoDorksPY
+go build -o GoDorks .
+./GoDorks
+```
+
+### Cross-compilar para múltiples plataformas
+```bash
+# Windows (64-bit)
+GOOS=windows GOARCH=amd64 go build -o GoDorks.exe .
+
+# Linux (64-bit)
+GOOS=linux GOARCH=amd64 go build -o GoDorks_linux .
+
+# macOS (Apple Silicon)
+GOOS=darwin GOARCH=arm64 go build -o GoDorks_mac .
+```
 
 ---
 
 ## 🤝 Contribuir / Contributing
 
-¡Las contribuciones son bienvenidas! Si tienes nuevos patrones de dorks o mejoras visuales:
+¡Las contribuciones son bienvenidas! Para añadir nuevos patrones de dorks:
+
 1. Haz un Fork del proyecto.
-2. Crea tu rama (`git checkout -b feature/MejoraDork`).
-3. Haz commit de tus cambios (`git commit -m 'Añadir dork para log de servidores'`).
-4. Push a la rama (`git push origin feature/MejoraDork`).
-5. Abre un Pull Request.
+2. Crea tu rama: `git checkout -b feature/NuevoDork`
+3. Añade tu dork en la función `getCategories()` de `main.go`.
+4. Abre un Pull Request.
 
 ---
 
 ## ⚖️ Licencia / License
 
 Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
+
+> **Disclaimer**: Esta herramienta es para fines educativos e investigación de seguridad ética. El uso indebido es responsabilidad exclusiva del usuario.

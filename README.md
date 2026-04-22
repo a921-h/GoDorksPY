@@ -14,6 +14,7 @@ GoDorksPY es una potente herramienta OSINT (Open Source Intelligence) desarrolla
 - **Categorización Inteligente**: Dorks agrupados por Archivos, Social, Infraestructura y Búsqueda Avanzada.
 - **+20 Patrones de Dorks**: Incluye búsquedas de archivos sensibles, perfiles sociales, directorios expuestos y más.
 - **Versión Ejecutable**: Permite generar un `.exe` independiente para usar sin dependencias.
+- **Soporte Docker**: Úsalo como aplicación web en cualquier servidor.
 
 > **¡Descarga rápida!** No tienes que instalar nada. Baja directamente el [GoDorksPY.exe aquí](https://github.com/a921-h/GoDorksPY/releases/latest/download/GoDorksPY.exe) y haz doble clic para empezar a investigar.
 
@@ -61,6 +62,24 @@ GoDorksPY is a powerful OSINT (Open Source Intelligence) tool developed in Pytho
    ```bash
    pip install -r requirements.txt
    ```
+
+---
+
+## 🐳 Uso con Docker / Docker Support
+
+Puedes ejecutar GoDorksPY como una **aplicación web** accesible desde cualquier navegador utilizando Docker. Ideal para desplegarlo en un servidor, VPS o NAS.
+
+1. **Construir la imagen / Build image**:
+   ```bash
+   docker build -t godorkspy .
+   ```
+
+2. **Ejecutar el contenedor / Run container**:
+   ```bash
+   docker run -d -p 8550:8550 godorkspy
+   ```
+
+¡Abre tu navegador y ve a `http://localhost:8550` para usar la herramienta!
 
 ---
 
